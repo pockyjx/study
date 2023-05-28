@@ -44,6 +44,40 @@ public class BoardDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void insertBoard(BoardDTO dto) {
+		
+		try {
+			
+			// 1+2. DB 연결
+			con = getCon();
+			
+			// 3. sql 작성 & pstmt 생성
+			sql = "insert into board (name, pw, title, content, date, readcnt) "
+					+ " values(?,?,?,?,now(),?)";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getPw());
+			pstmt.setString(3, dto.getTitle());
+			pstmt.setString(4, dto.getContent());
+			pstmt.setInt(5, 0);
+			
+			// 4. sql 실행
+			pstmt.executeUpdate();
+			
+			System.out.println("DAO : 새 글 등록 완료!");
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+	}
 
 
 		

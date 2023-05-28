@@ -18,6 +18,8 @@ import com.study.commons.ActionForward;
  *
  */
 
+// http://localhost:8088/Study/BoardWrite.bo
+
 @WebServlet("*.bo")
 public class BoardFrontController extends HttpServlet {
 	
@@ -51,7 +53,30 @@ public class BoardFrontController extends HttpServlet {
 		ActionForward forward = null;
 		Action action = null;
 		
+		// 글쓰기
+		if(command.equals("/BoardWrite.bo")) {
+			System.out.println("C : /BoardWrite.bo 실행");
+			System.out.println("C : DB 사용 X, view 페이지 이동 (패턴1)");
+			
+			forward = new ActionForward();
+			forward.setPath("./board/writeForm.jsp");
+			forward.setRedirect(false);
+		}
 		
+		// 글쓰기 Action
+		else if(command.equals("/BoardWriteAction.bo")) {
+			System.out.println("C : /BoardWrite.bo 실행");
+			System.out.println("C : DB 사용 O, view 페이지 이동 (패턴2)");
+			
+			action = new BoardWriteAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		
 		
 		System.out.println("2. 가상주소 매핑 끝!");
