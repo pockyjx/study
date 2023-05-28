@@ -200,7 +200,7 @@ public class BoardDAO {
 		
 	} // getBoardList()
 	
-	// getBoardList() : 게시판 목록 - 오버로딩
+	// getBoardList(search) : 게시판 목록 - 오버로딩
 	public List<BoardDTO> getBoardList(String search, int startRow, int pageSize) {
 		List<BoardDTO> boardList = new ArrayList<>();
 		BoardDTO dto = null;
@@ -247,7 +247,51 @@ public class BoardDAO {
 		
 		return boardList;
 		
-	} // getBoardList()
+	} // getBoardList(search)
+	
+	// getBoardDetail(bno) : 글 상세내용 조회
+	public BoardDTO getBoardDetail(int bno) {
+		BoardDTO dto = null;
+		
+		try {
+	
+			// 1+2. DB 연결
+			con = getCon();
+		
+			// 3. sql 작성 & pstmt 생성
+			sql = "select * from board where bno=?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			if(rs.next()) {
+				dto = new BoardDTO();
+				
+				dto.setBno(rs.getInt("bno"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getDate("date"));
+				dto.setName(rs.getString("name"));
+				dto.setPw(rs.getString("pw"));
+				dto.setReadcnt(rs.getInt("readcnt"));
+				dto.setTitle(rs.getString("title"));
+			}
+			
+			System.out.println(bno + "번 글 상세내용 조회 완료!");
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+		
+		return dto;
+	}
 
 		
 

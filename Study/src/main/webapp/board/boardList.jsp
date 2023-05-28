@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<h1>글 목록</h1>
+<h1><a href="./BoardList.bo">글 목록</a></h1>
 
 <table border="1">
 
@@ -29,7 +29,7 @@
 	<c:forEach var="dto" items="${boardList }">
 	<tr>
 		<td>${dto.bno}</td>
-		<td><a href=""> ${dto.title} </a></td>
+		<td><a href="./BoardDetail.bo?pageNum=${pageNum }&bno=${dto.bno }"> ${dto.title} </a></td>
 		<td>${dto.name}</td>
 		<td>${dto.date}</td>
 		<td>${dto.readcnt}</td>
@@ -72,6 +72,9 @@
 		검색 : <input type="text" name="search">
 		<input type="submit" value="검색">
 	</form>
+	
+	<br>
+	<input type="button" onclick="location.href='./BoardWrite.bo'" value="글쓰기"> 
 
 </body>
 </html>

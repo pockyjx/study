@@ -39,7 +39,7 @@ public class BoardListAction implements Action {
 		}
 		
 		// 한 페이지에 보여줄 글의 개수
-		int pageSize = 1;
+		int pageSize = 5;
 
 		// 시작행 번호 계산 : 1 11 21 31 ...
 		int currentPage = Integer.parseInt(pageNum);
@@ -52,7 +52,7 @@ public class BoardListAction implements Action {
 
 		// 전체 페이지 수 계산
 		// 한 화면에 보여줄 페이지 번호의 개수
-		int pageBlock = 1;
+		int pageBlock = 5;
 
 		// 시작 페이지 번호 
 		int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;

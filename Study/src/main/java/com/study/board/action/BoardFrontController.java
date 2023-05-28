@@ -92,6 +92,21 @@ public class BoardFrontController extends HttpServlet {
 			}
 		}
 		
+		// 글 상세 내용
+		else if(command.equals("/BoardDetail.bo")) {
+			System.out.println("C : /BoardDetail.bo 실행");
+			System.out.println("C : DB 사용 O, view 페이지 이동 + 출력 (패턴3)");
+			
+			action = new BoardDetailAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		
 		System.out.println("2. 가상주소 매핑 끝!");
 		System.out.println("\n\n");
