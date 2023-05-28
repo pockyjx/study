@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -45,6 +47,7 @@ public class BoardDAO {
 		}
 	}
 	
+	// insertBoard(DTO) : 글 업로드
 	public void insertBoard(BoardDTO dto) {
 		
 		try {
@@ -77,8 +80,89 @@ public class BoardDAO {
 			closeDB();
 		}
 		
-	}
+	} // insertBoard()
+	
+	// getBoardCount() : 글 개수 조회
+	public int getBoardCount() {
+		int result = 0;
+		
+		try {
 
+			// 1+2. DB 연결
+			con = getCon();
+			
+			// 3. sql 작성 & pstmt 생성
+			sql = "select count(*) from board";
+			pstmt = con.prepareStatement(sql);
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+			System.out.println("DAO : 글 개수 조회 - " + result + "개");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+		return result;
+		
+	} // getBoardCount();
+
+	// getBoardList() : 게시판 목록
+	public List<BoardDTO> getBoardList(int startRow, int pageSize) {
+		List<BoardDTO> boardList = new ArrayList<>();
+		BoardDTO dto = null;
+		
+		try {
+			
+			// 1+2. DB 연결
+			con = getCon();
+			
+			// 3. sql 작성 & pstmt 생성
+			sql = "select * from board order by bno asc limit ?,?";
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, startRow-1); // 시작위치-1
+			pstmt.setInt(2, pageSize); // 개수
+			
+			// 4. sql 실행
+			rs = pstmt.executeQuery();
+			
+			// 5. 데이터 처리
+			while(rs.next()) {
+				dto = new BoardDTO();
+				
+				dto.setBno(rs.getInt("bno"));
+				dto.setContent(rs.getString("content"));
+				dto.setDate(rs.getDate("date"));
+				dto.setName(rs.getString("name"));
+				dto.setPw(rs.getString("pw"));
+				dto.setReadcnt(rs.getInt("readcnt"));
+				dto.setTitle(rs.getString("title"));
+				
+				boardList.add(dto);
+			}
+			
+			System.out.println("DAO : 게시판 목록 조회 성공!");
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeDB();
+		}
+		
+		return boardList;
+		
+	} // getBoardList()
 
 		
 

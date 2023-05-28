@@ -19,6 +19,7 @@ import com.study.commons.ActionForward;
  */
 
 // http://localhost:8088/Study/BoardWrite.bo
+// http://localhost:8088/Study/BoardList.bo
 
 @WebServlet("*.bo")
 public class BoardFrontController extends HttpServlet {
@@ -76,7 +77,20 @@ public class BoardFrontController extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-
+		
+		// 게시판 목록
+		else if(command.equals("/BoardList.bo")) {
+			System.out.println("C : /BoardList.bo 실행");
+			System.out.println("C : DB 사용 O, view 페이지 이동 + 출력 (패턴3)");
+			
+			action = new BoardListAction();
+			try {
+				forward = action.execute(request, response);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 		System.out.println("2. 가상주소 매핑 끝!");
