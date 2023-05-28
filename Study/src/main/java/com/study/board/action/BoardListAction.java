@@ -16,21 +16,30 @@ public class BoardListAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		System.out.println("M : BoardListAction_execute() 실행");
 		
+		// 전달정보 저장 (검색어 있는 경우)
+		String search = request.getParameter("search");
+		
 		BoardDAO dao = new BoardDAO();
 		
 		//////////////////////////////////////////페이징 //////////////////////////////////////////////////
 		
 		// 글 개수 조회
-		int count = dao.getBoardCount();
+		int count = 0;
 		
-		// 한 페이지에 출력할 글 개수
-		int pageSize = 10;
+		if(search == null) { // 검색어 없는 경우
+			count = dao.getBoardCount();
+		} else { // 검색어 있는 경우
+			count = dao.getBoardCount(search);
+		}
 
 		// 현 페이지 정보가 몇페이지인지 체크
 		String pageNum = request.getParameter("pageNum");
 		if(pageNum == null) {
 			pageNum = "1";
 		}
+		
+		// 한 페이지에 보여줄 글의 개수
+		int pageSize = 1;
 
 		// 시작행 번호 계산 : 1 11 21 31 ...
 		int currentPage = Integer.parseInt(pageNum);
@@ -43,7 +52,7 @@ public class BoardListAction implements Action {
 
 		// 전체 페이지 수 계산
 		// 한 화면에 보여줄 페이지 번호의 개수
-		int pageBlock = 10;
+		int pageBlock = 1;
 
 		// 시작 페이지 번호 
 		int startPage = ((currentPage-1)/pageBlock)*pageBlock+1;
@@ -58,10 +67,17 @@ public class BoardListAction implements Action {
 		
 		
 		// 글 목록 생성 : getBoardList()
-		List<BoardDTO> boardList = dao.getBoardList(startRow, pageSize);
+		List<BoardDTO> boardList = null;
+		
+		if(search == null) { // 검색어 없을 때
+			boardList = dao.getBoardList(startRow, pageSize);
+		} else { // 검색어 있을 때
+			boardList = dao.getBoardList(search, startRow, pageSize);
+		}
+		
 		
 		// request 영역에 저장
-//		request.setAttribute("search", search);
+		request.setAttribute("search", search);
 		request.setAttribute("boardList", boardList);
 		request.setAttribute("count", count);
 

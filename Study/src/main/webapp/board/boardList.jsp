@@ -13,6 +13,11 @@
 
 <table border="1">
 
+	<c:if test="${search != null }">
+		검색어 : ${search }
+		<hr>
+	</c:if>
+
 	<tr>
 		<th>글번호</th>
 		<th>제목</th>
@@ -36,18 +41,37 @@
 	<c:if test="${count > 0 }">
 			
 		<c:if test="${startPage > pageBlock }">
-			<a href="./BoardList.bo?pageNum=${startPage - pageBlock }">이전</a>
+			<a href="./BoardList.bo?pageNum=${startPage - pageBlock }
+			<c:if test="${search != null}" >
+				&search=${search }
+			</c:if>
+			">이전</a>
 		</c:if>
 		
 		<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
-			<a href="./BoardList.bo?pageNum=${i }">${i }</a>
+			<a href="./BoardList.bo?pageNum=${i }
+			<c:if test="${search != null}" >
+				&search=${search }
+			</c:if>
+			">${i }</a>
 		</c:forEach>
 		
 		<c:if test="${endPage < pageCount }">
-			<a href="./BoardList.bo?pageNum=${startPage + pageBlock }"}>다음</a>			
+			<a href="./BoardList.bo?pageNum=${startPage + pageBlock }
+			<c:if test="${search != null}" >
+				&search=${search }
+			</c:if>
+			"}>다음</a>			
 		</c:if>
 			
 	</c:if>
+	
+	<hr>
+	
+	<form action="./BoardList.bo">
+		검색 : <input type="text" name="search">
+		<input type="submit" value="검색">
+	</form>
 
 </body>
 </html>
